@@ -1,0 +1,58 @@
+services:
+  bedrock-gateway:
+    build: ./bedrock-gateway
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - DEFAULT_MODEL=anthropic.claude-3-5-sonnet-20240620-v1:0
+      - BEDROCK_GW_API_KEY=bedrock
+      - DEBUG=false
+    ports:
+      - 8000:80
+    restart: unless-stopped
+
+  webui-db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=myapp_db
+      - POSTGRES_USER=myapp_user
+      - POSTGRES_PASSWORD=myapp_pass
+    ports:
+      - 5431:5431
+    command: -p 5431
+    volumes:
+      - ${HOME}/.bedrockui/postgres/open-webui:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U myapp_user -d myapp_db -p 5431" ]
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:latest
+    container_name: open-webui
+    depends_on:
+      - webui-db
+      - bedrock-gateway
+    ports:
+      - 3000:8080
+    volumes:
+      - ${HOME}/.bedrockui/open-webui/data:/app/backend/data
+    environment:
+      - OPENAI_API_BASE_URL=http://host.docker.internal:8000/api/v1
+      - OPENAI_API_KEY=bedrock
+      - WEBUI_SECRET_KEY=bedrock
+      - WEBUI_DB_HOST=webui-db
+      - WEBUI_AUTH=False
+      - ENABLE_LOGIN_FORM=False
+      - ENABLE_OLLAMA_API=False
+      - DATABASE_URL=postgresql://myapp_user:myapp_pass@webui-db:5431/myapp_db
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+
+# volumes:
+#   ollama: {}
+#   open-webui: {}
