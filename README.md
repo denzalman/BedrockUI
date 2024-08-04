@@ -30,6 +30,8 @@ export AWS_SESSION_TOKEN=your_session_token # Optional
 - Install Bedrock Open UI with Docker Compose:
 
 ```bash
+git clone git@github.com:denzalman/BedrockUI.git
+cd BedrockUI
 docker compose up
 ```
 - Wait for the build and pull images to finish
