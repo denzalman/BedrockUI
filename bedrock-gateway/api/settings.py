@@ -10,7 +10,7 @@ DESCRIPTION = """
 Use OpenAI-Compatible APIs for AWS Bedrock models.
 
 Currently supported models:
-- Anthropic Claude 2 / 3 /3.5 (Haiku/Sonnet/Opus)
+- Anthropic Claude 2 / 3 / 3.5 (Haiku/Sonnet/Opus)
 - Meta Llama 2 / 3
 - Mistral / Mixtral
 - Cohere Command R / R+
