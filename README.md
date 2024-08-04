@@ -1,6 +1,8 @@
 # Bedrock Open UI
 
-Open Web UI + AWS Bedrock to OpenAI gateway in one package.
+[Open Web UI](https://openwebui.com/) + AWS Bedrock to OpenAI gateway in one package.
+
+![alt text](.github/doc/image.png)
 
 Currently supported models:
 - Anthropic Claude 2 / 3 / 3.5 (Haiku/Sonnet/Opus)
@@ -9,7 +11,7 @@ Currently supported models:
 - Cohere Command R / R+
 - Cohere Embedding
 
-## Prerequisites
+## Prerequisites!
 - Docker installed on your machine
 - AWS credentials with permissions to use AWS Bedrock
 - AWS Bedrock models approved for your account
